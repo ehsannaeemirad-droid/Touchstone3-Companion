@@ -1,0 +1,12 @@
+{
+  "name": "Touchstone 3 Companion",
+  "short_name": "TS3 Companion",
+  "description": "Mobile-first English learning companion",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0A0A0F",
+  "theme_color": "#0A0A0F",
+  "icons": [{"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
