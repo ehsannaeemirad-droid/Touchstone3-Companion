@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0A0A0F">
 <title>Touchstone 3 · Feed</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Vazirmatn:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Vazirmatn:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <style>
 :root{
   --bg:#0A0A0F; --card:#14141B; --card-2:#1C1C26;
-  --fg:#F5F5F7; --fg-soft:#B8B8C4; --muted:#70707F;
+  --fg:#F5F5F7; --fg-soft:#B8B8C4; --muted:#8A8A99;
   --line:rgba(255,255,255,.08); --line-strong:rgba(255,255,255,.14);
   --accent:#6E8BFF;
   --ok:#4ADE80; --ok-soft:rgba(74,222,128,.14);
@@ -33,6 +33,8 @@
   --c-gap:#14B8A6; --c-grammar:#D97706; --c-test:#E11D48;
   --c-passage:#EA580C; --c-reading:#059669; --c-writing:#DB2777;
   --c-overview:#4F6FE8; --c-wrap:#4F6FE8;
+  --ok:#15803D; --bad:#DC2626; --warn:#B45309; --muted:#6B6B76;
+  --ok-soft:rgba(21,128,61,.12); --bad-soft:rgba(220,38,38,.1); --warn-soft:rgba(180,83,9,.12);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;overscroll-behavior:none}
@@ -104,8 +106,8 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-r
 /* ============ FEED ============ */
 .feed{position:fixed;inset:0;overflow-y:scroll;overflow-x:hidden;scroll-snap-type:y mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .feed::-webkit-scrollbar{display:none}
-.card{height:100dvh;width:100%;scroll-snap-align:start;scroll-snap-stop:always;position:relative;display:flex;flex-direction:column;padding:var(--safe-top) 0 var(--safe-bottom);overflow:hidden}
-.card-inner{flex:1;display:flex;flex-direction:column;padding:60px 22px 80px;max-width:680px;margin:0 auto;width:100%;min-height:0}
+.card{height:100%;width:100%;scroll-snap-align:start;scroll-snap-stop:always;position:relative;display:flex;flex-direction:column;padding:var(--safe-top) 0 var(--safe-bottom);overflow:hidden}
+.card-inner{flex:1;display:flex;flex-direction:column;padding:60px 22px 80px;max-width:680px;margin:0 auto;width:100%;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--c,var(--accent));opacity:.9}
 .card[data-sec="overview"]{--c:var(--c-overview)}
 .card[data-sec="Vocabulary"]{--c:var(--c-vocab)}
@@ -192,12 +194,12 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-r
 .flashcard .back{opacity:0;pointer-events:none}
 .flashcard.flipped .front{opacity:0;pointer-events:none;transform:scale(.94)}
 .flashcard.flipped .back{opacity:1;pointer-events:auto}
-.flashcard-front .kind-pill{display:none;display:inline-block;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:5px 11px;border-radius:999px;background:color-mix(in srgb,var(--c-vocab) 22%,transparent);color:var(--c-vocab);margin-bottom:22px;position:relative;z-index:1}
-.flashcard-front .word{font-size:clamp(36px,9vw,54px);font-weight:800;letter-spacing:-.03em;line-height:1.08;margin-bottom:18px;position:relative;z-index:1;max-width:12ch}
-.flashcard-front .hint{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);position:relative;z-index:1}
-.flashcard-back .fa-word{font-family:var(--farsi);direction:rtl;font-size:clamp(24px,6vw,32px);font-weight:600;line-height:1.6;margin-bottom:22px;color:var(--fg);position:relative;z-index:1}
-.flashcard-back .divider{width:60px;height:2px;background:color-mix(in srgb,var(--c-vocab) 40%,transparent);border-radius:2px;margin:0 auto 20px;position:relative;z-index:1}
-.flashcard-back .ex{font-family:var(--serif);font-style:italic;font-size:16px;line-height:1.65;color:var(--fg-soft);max-width:28ch;position:relative;z-index:1}
+.flashcard-face.front .kind-pill{display:none;display:inline-block;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:5px 11px;border-radius:999px;background:color-mix(in srgb,var(--c-vocab) 22%,transparent);color:var(--c-vocab);margin-bottom:22px;position:relative;z-index:1}
+.flashcard-face.front .word{font-size:clamp(36px,9vw,54px);font-weight:800;letter-spacing:-.03em;line-height:1.08;margin-bottom:18px;position:relative;z-index:1;max-width:12ch}
+.flashcard-face.front .hint{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);position:relative;z-index:1}
+.flashcard-face.back .fa-word{font-family:var(--farsi);direction:rtl;font-size:clamp(24px,6vw,32px);font-weight:600;line-height:1.6;margin-bottom:22px;color:var(--fg);position:relative;z-index:1}
+.flashcard-face.back .divider{width:60px;height:2px;background:color-mix(in srgb,var(--c-vocab) 40%,transparent);border-radius:2px;margin:0 auto 20px;position:relative;z-index:1}
+.flashcard-face.back .ex{font-family:var(--serif);font-style:italic;font-size:16px;line-height:1.65;color:var(--fg-soft);max-width:28ch;position:relative;z-index:1}
 .vocab-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
 .speak-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:999px;font-size:13px;font-weight:600;color:var(--fg-soft);transition:all .15s;cursor:pointer}
 [data-theme="light"] .speak-btn{background:rgba(0,0,0,.03)}
@@ -215,7 +217,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-r
 .fb{margin-top:16px;padding:14px 16px;border-radius:12px;font-size:14px;line-height:1.55;display:none}
 .fb.show{display:block}
 .fb.ok{background:var(--ok-soft);color:var(--ok)}
-.fb.bad{background:var(--bad-soft);color:var(--bad);direction:rtl;text-align:right}
+.fb.bad{background:var(--bad-soft);color:var(--bad)}
 .fb.bad .en{direction:ltr;display:block;text-align:left;margin-top:4px;font-size:13.5px}
 
 /* Matching */
@@ -239,7 +241,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-r
 .grammar-teach h3:first-child{margin-top:0}
 .grammar-teach p{margin-bottom:10px}
 .grammar-teach .ex{padding:12px 14px;background:rgba(251,191,36,.1);border-left:3px solid var(--c);border-radius:0 8px 8px 0;direction:ltr;text-align:left;font-family:var(--serif);font-style:italic;font-size:15px;line-height:1.55;margin:10px 0}
-.grammar-teach .err{padding:12px 14px;background:var(--bad-soft);border-left:3px solid var(--bad);border-radius:0 8px 8px 0;font-size:13px;line-height:1.6;margin:10px 0}
+.grammar-teach .err{direction:ltr;text-align:left;padding:12px 14px;background:var(--bad-soft);border-left:3px solid var(--bad);border-radius:0 8px 8px 0;font-size:13px;line-height:1.6;margin:10px 0}
 .grammar-teach .err .en{direction:ltr;display:block;margin-top:4px;color:var(--ok)}
 .grammar-teach .note{padding:12px 14px;background:var(--card-2);border-radius:8px;font-size:13px;line-height:1.6;color:var(--fg-soft);margin:10px 0}
 .grammar-teach table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px;direction:ltr}
@@ -411,8 +413,50 @@ textarea.writing::placeholder{color:var(--muted)}
 /* Avoid mandatory snapping to an unintended neighboring card during a quick flick. */
 .feed{scroll-snap-type:none!important;scroll-behavior:auto!important}
 .flashcard-face.front .word{font-size:clamp(28px,7vw,40px);font-weight:800;line-height:1.22;letter-spacing:-.035em}
+.unit-row[aria-expanded="true"] .unit-chevron{transform:rotate(180deg)}
+body[data-page="home"] .back-btn,body:not([data-page="lesson"]) .map-btn{display:none!important}
+.fb .en{display:block;direction:ltr;text-align:left;font-weight:600}
+.fb .fa-ex{display:block;direction:rtl;text-align:right;font-family:var(--farsi);font-weight:400;font-size:14px;line-height:1.8;margin-top:4px}
+.fb.fa-hint{white-space:pre-line}
+.flashcard:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:22px}
+.grammar-teach .en-block{direction:ltr;text-align:left;font-family:var(--sans)}
+.home::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(120% 55% at 50% -10%,color-mix(in srgb,var(--accent) 22%,transparent),transparent 60%)}
+.home-inner{position:relative;padding-bottom:100px}
+.hm-top{display:flex;justify-content:space-between;align-items:center}
+.hm-brand{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.hm-chip{font-size:12px;font-weight:700;padding:7px 12px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--fg-soft)}
+.hm-hello{font-size:clamp(28px,7vw,36px);font-weight:800;letter-spacing:-.03em;margin:18px 0 20px}
+.hm-hello span{color:var(--accent)}
+.hm-hero{display:flex;align-items:center;gap:16px;width:100%;padding:18px;border-radius:22px;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 28%,var(--card)),var(--card));border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);box-shadow:0 14px 40px rgba(0,0,0,.25);margin-bottom:22px}
+.hm-ring{position:relative;width:64px;height:64px;flex:0 0 64px}
+.hm-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.hm-ring circle{fill:none;stroke-width:5}
+.hm-ring .bg{stroke:var(--line-strong)}
+.hm-ring .fg{stroke:var(--accent);stroke-linecap:round}
+.hm-ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:14px}
+.hm-hero-t{flex:1;min-width:0}
+.hm-hero-t .k{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.hm-hero-t .t{font-size:16px;font-weight:700;line-height:1.3}
+.hm-hero-t .s{font-family:var(--farsi);font-size:12.5px;color:var(--fg-soft);margin-top:2px}
+.hm-go{font-size:22px;color:var(--accent)}
+.hm-count{font-size:12px;font-weight:700;color:var(--muted)}
+.hm-path{padding:4px 0 8px}
+.hm-node{display:flex;align-items:center;gap:14px;width:100%;padding:9px 2px;position:relative}
+.hm-node+.hm-node::before{content:"";position:absolute;left:23px;top:-50%;height:100%;width:2px;background:var(--line-strong)}
+.hm-node .dot{position:relative;z-index:1;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:800;background:var(--card);border:2px solid var(--line-strong);color:var(--fg-soft)}
+.hm-node.done .dot{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.hm-node.now .dot{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 0 0 6px color-mix(in srgb,var(--accent) 22%,transparent)}
+.hm-node.lock{opacity:.5}
+.hm-node .tx{display:flex;flex-direction:column;min-width:0}
+.hm-node .tt{font-size:14.5px;font-weight:600;line-height:1.3}
+.hm-node .fa{font-family:var(--farsi);font-size:12px;color:var(--muted)}
+.hm-nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + var(--safe-bottom));display:flex;gap:4px;padding:6px;border-radius:22px;background:var(--card);border:1px solid var(--line);z-index:45;width:min(92vw,420px);box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.hm-nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:16px;font-size:18px;color:var(--fg-soft);text-align:center}
+.hm-nav button span{font-size:10.5px;font-weight:700}
+.hm-nav button.on{background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent)}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -444,174 +488,11 @@ textarea.writing::placeholder{color:var(--muted)}
 <div class="word-popup" id="wordPopup"></div>
 <div class="modal-overlay" id="modal"><div class="modal-box" id="modalBox"></div></div>
 
+<script src="lessons.js"></script>
 <script>
 /* ============================================================
    LESSON DATA
    ============================================================ */
-const LESSONS = {
-"1A":{
-  unit:1, letter:"A", ready:true,
-  title:"Behavioral Norms & Manner Adverbs",
-  titleFa:"هنجارهای رفتاری و قیدهای حالت",
-  tip:"Adverbs tell how an action happens. Adjectives describe people and things.",
-  vocab:[
-    ["arrive punctually","chunk","به موقع رسیدن","Employees are expected to arrive punctually for every meeting."],
-    ["wait your turn","chunk","نوبت خود را رعایت کردن","You should stand in line and wait your turn patiently."],
-    ["keep your voice down","chunk","صدای خود را پایین نگه داشتن","Please keep your voice down on public transit."],
-    ["speak directly","chunk","صریح صحبت کردن","She prefers to speak directly when resolving misunderstandings."],
-    ["express negative feelings","chunk","ابراز احساسات منفی","It can be challenging to express negative feelings without offending others."],
-    ["follow public etiquette","chunk","رعایت آداب عمومی","Travelers ought to learn how to follow public etiquette abroad."],
-    ["be set in one's ways","idiom","غیرقابل انعطاف بودن","My grandfather is set in his ways and rarely changes his daily routine."],
-    ["cut in line","idiom","صف زدن","It is very rude to cut in line at the grocery store."],
-    ["drive recklessly","collocation","بی‌پروا رانندگی کردن","Drivers who drive recklessly put everyone in danger."],
-    ["handle stress calmly","collocation","با آرامش استرس را مدیریت کردن","A good team leader knows how to handle stress calmly."],
-    ["blend in","phrasal verb","همرنگ جماعت شدن","She tried to blend in with the local crowd."],
-    ["stand out","phrasal verb","متمایز بودن","Loud talking on a quiet train will make you stand out."],
-    ["show mutual respect","collocation","احترام متقابل نشان دادن","Workplace relationships are built on mutual respect."],
-    ["lose one's temper","idiom","از کوره در رفتن","Try not to lose your temper when flight delays interrupt your travel."],
-    ["be tight on time","chunk","وقت کم داشتن","We should take a taxi because we are tight on time."],
-    ["treat people fairly","chunk","عادلانه رفتار کردن","Managers must treat people fairly regardless of preferences."],
-    ["make a scene","idiom","جنجال به پا کردن","He was upset, but he decided not to make a scene."],
-    ["adapt to local norms","chunk","خود را با هنجارهای محلی وفق دادن","Expatriates adjust faster when they adapt to local norms quickly."],
-    ["be considerate of others","chunk","مراعات حال دیگران را کردن","Playing loud music late at night is not considerate of others."],
-    ["mind one's manners","idiom","مبادی آداب بودن","Children are taught to mind their manners when visiting relatives."]
-  ],
-  grammar:{
-    points:[
-      {label:"نقطه ۱", title:"Adjectives and Adverbs",
-       html:`<h3>Adjectives and Adverbs</h3>
-<p><b>صفت</b> یک شخص یا چیز را توصیف می‌کند. جای صفت دو حالت دارد: قبل از اسم، یا بعد از افعال ربطی مثل <b>be, look, feel, sound, taste, smell</b>.</p>
-<div class="ex">She is a <span class="hl">careful</span> driver.</div>
-<div class="ex">The soup <span class="hl">tastes</span> good.</div>
-<p><b>قید</b> نشان می‌دهد یک کار <b>چگونه</b> انجام می‌شود. جای قید بعد از فعل کنشی است.</p>
-<div class="ex">She drives <span class="hl">carefully</span>.</div>`,
-       qs:[{q:"She is a _____ driver.",o:["careful","carefully"],a:0,ex:"صفت قبل از اسم driver می‌آید."},
-           {q:"She drives _____.",o:["careful","carefully"],a:1,ex:"بعد از فعل کنشی قید می‌آید."}]},
-      {label:"نقطه ۲", title:"Forming adverbs with -ly",
-       html:`<h3>Forming adverbs with -ly</h3>
-<p>اکثر قیدها با اضافه کردن <b>-ly</b> به صفت ساخته می‌شوند.</p>
-<div class="ex">quick → <span class="hl">quickly</span> · patient → <span class="hl">patiently</span></div>
-<p>اگر صفت به <b>-y</b> ختم شود، y به i تبدیل می‌شود و سپس -ly اضافه می‌شود.</p>
-<div class="ex">easy → <span class="hl">easily</span> · heavy → <span class="hl">heavily</span></div>`,
-       qs:[{q:"He speaks very _____.",o:["quiet","quietly"],a:1,ex:"بعد از فعل speak قید می‌آید."},
-           {q:"She finished the test _____.",o:["easy","easily"],a:1,ex:"y به i تبدیل می‌شود."}]},
-      {label:"نقطه ۳", title:"Adverbs that do not change form",
-       html:`<h3>Adverbs that do not change form</h3>
-<p>بعضی کلمات هم صفت هستند و هم قید. به آن‌ها -ly اضافه نکنید.</p>
-<div class="ex">fast → He runs <span class="hl">fast</span>.</div>
-<div class="ex">hard → She works <span class="hl">hard</span>.</div>
-<div class="ex">late → He arrived <span class="hl">late</span>.</div>
-<p>اما <b>good</b> تبدیل به <b>well</b> می‌شود.</p>
-<div class="ex">She sings <span class="hl">well</span>.</div>
-<div class="note">توجه: <b>hardly</b> یعنی «تقریباً هیچ»؛ <b>lately</b> یعنی «اخیراً».</div>`,
-       qs:[{q:"He runs very _____.",o:["fast","fastly"],a:0,ex:"کلمه fastly وجود ندارد."},
-           {q:"She sings very _____.",o:["good","well"],a:1,ex:"قید صفت good کلمه well است."}]},
-      {label:"نقطه ۴", title:"Linking verbs",
-       html:`<h3>Linking verbs</h3>
-<p>بعد از افعال <b>be, look, feel, sound, taste, smell</b> باید از <b>صفت</b> استفاده شود، نه قید.</p>
-<div class="ex">The dinner smells <span class="hl">delicious</span>.</div>
-<div class="err">✗ The dinner smells <b>deliciously</b>.<span class="en">✓ The dinner smells delicious.</span></div>
-<div class="ex">She looks <span class="hl">patient</span>.</div>`,
-       qs:[{q:"The soup tastes _____.",o:["delicious","deliciously"],a:0,ex:"فعل حسی + صفت."},
-           {q:"You look _____.",o:["tired","tiredly"],a:0,ex:"look + صفت."}]}
-    ],
-    testSets:[
-     {title:"Test Set 1", qs:[
-      {q:"She is a _____ driver.",o:["careful","carefully"],a:0,ex:"صفت قبل از اسم."},
-      {q:"She drives very _____.",o:["careful","carefully"],a:1,ex:"بعد از فعل قید."},
-      {q:"He plays the piano _____.",o:["good","well"],a:1,ex:"قید good = well."},
-      {q:"I can _____ hear you.",o:["hard","hardly"],a:1,ex:"hardly = تقریباً هیچ."},
-      {q:"The food smells _____.",o:["bad","badly"],a:0,ex:"فعل حسی + صفت."},
-      {q:"They arrived _____ for the meeting.",o:["late","lately"],a:0,ex:"late = دیر."},
-      {q:"She finished the assignment _____.",o:["easy","easily"],a:1,ex:"y به i تبدیل."},
-      {q:"He runs very _____.",o:["fast","fastly"],a:0,ex:"fastly نیست."},
-      {q:"Please speak _____.",o:["clear","clearly"],a:1,ex:"فعل speak + قید."},
-      {q:"You look _____.",o:["tired","tiredly"],a:0,ex:"look + صفت."}]},
-     {title:"Test Set 2", qs:[
-      {q:"The music sounds _____.",o:["loud","loudly"],a:0,ex:"sound + صفت."},
-      {q:"She sings _____.",o:["beautiful","beautifully"],a:1,ex:"قید حالت."},
-      {q:"He worked _____ all day.",o:["hard","hardly"],a:0,ex:"work hard."},
-      {q:"They speak English _____.",o:["fluent","fluently"],a:1,ex:"فعل speak + قید."},
-      {q:"The coffee tastes _____.",o:["bitter","bitterly"],a:0,ex:"taste + صفت."},
-      {q:"He is a _____ worker.",o:["hard","hardly"],a:0,ex:"صفت قبل از اسم."},
-      {q:"She answered the question _____.",o:["confident","confidently"],a:1,ex:"قید حالت."},
-      {q:"The manager looked _____ at the report.",o:["serious","seriously"],a:0,ex:"look = seem."},
-      {q:"He drives _____ on the highway.",o:["reckless","recklessly"],a:1,ex:"قید حالت."},
-      {q:"The children played _____.",o:["happy","happily"],a:1,ex:"y به i تبدیل."}]}
-    ],
-    passages:[
-     {title:"Working Under Pressure",
-      text:"In modern corporate environments, employees must learn to act professionally under stress. When unexpected problems arise, successful managers react calmly and analyze the situation carefully. They do not speak hastily or make reckless decisions. Instead, they listen attentively to their team members and assign tasks fairly. Employees who communicate clearly and work hard usually resolve issues easily. Even when deadlines approach fast, a well-organized team functions smoothly and produces excellent results.",
-      translationFa:"در محیط‌های کاری مدرن، کارمندان باید یاد بگیرند تحت فشار حرفه‌ای رفتار کنند. وقتی مشکلات غیرمنتظره پیش می‌آید، مدیران موفق با آرامش واکنش نشان می‌دهند و موقعیت را با دقت تحلیل می‌کنند.",
-      glossary:{"act professionally":{fa:"حرفه‌ای رفتار کردن",type:"colloc"},"react calmly":{fa:"با آرامش واکنش نشان دادن",type:"colloc"},"make reckless decisions":{fa:"تصمیمات بی‌پروا گرفتن",type:"colloc"},"listen attentively":{fa:"با دقت گوش دادن",type:"colloc"},"assign tasks fairly":{fa:"وظایف را عادلانه تقسیم کردن",type:"colloc"},"resolve issues":{fa:"مشکلات را حل کردن",type:"colloc"},"functions smoothly":{fa:"روان کار می‌کند",type:"colloc"}},
-      hl:["calmly","carefully","hastily","reckless","attentively","fairly","clearly","hard","easily","fast","smoothly","excellent"]},
-     {title:"Cultural Differences in Public Spaces",
-      text:"Public etiquette varies significantly across different global cultures. In some cities, commuters stand quietly in line and wait patiently for the subway. They speak softly on mobile phones to avoid disturbing others. However, in other regions, people interact lively and express their feelings openly in public areas. Travelers who adapt quickly to local norms usually enjoy their journeys immensely.",
-      translationFa:"آداب عمومی در فرهنگ‌های مختلف جهان به طور قابل توجهی متفاوت است. در برخی شهرها، مسافران روزانه ساکت در صف می‌ایستند و با صبر منتظر مترو می‌مانند.",
-      glossary:{"Public etiquette":{fa:"آداب عمومی",type:"vocab"},"varies significantly":{fa:"به طور قابل توجهی متفاوت است",type:"colloc"},"wait patiently":{fa:"با صبر منتظر ماندن",type:"colloc"},"speak softly":{fa:"آرام صحبت کردن",type:"colloc"},"adapt quickly":{fa:"سریع تطبیق پیدا کردن",type:"colloc"}},
-      hl:["significantly","quietly","patiently","softly","lively","openly","quickly","immensely"]}
-    ]
-  },
-  texts:[
-   {title:"Text 1: Public Etiquette and Time Across Cultures",
-    topic:"Public Etiquette and Time Across Cultures",
-    text:`Punctuality and public behavior are important parts of daily life in every country. However, people in different places do not always agree on what is polite. In some cultures, time is very strict. People plan their days carefully and try to arrive on time for every meeting. If you are five minutes late for work or a dinner party, people might think you are rude or lazy. When taking public transport, commuters stand in line patiently and wait for their turn to get on the bus. They also keep their voice down when talking on the phone so they do not bother other passengers.
-
-In other cultures, people view time in a more relaxed way. Personal relationships are more important than strict schedules. Arriving twenty or thirty minutes late for a social event is completely normal, and nobody feels angry. People like to talk freely and express their feelings openly in public spaces. You might hear loud conversations and laughter on the street or in restaurants.
-
-Neither way of living is wrong; they are just different social habits. When you travel to another country, it is helpful to observe how local people act. If you try to adapt to local norms and treat people respectfully, you will make friends easily and avoid unnecessary problems.`,
-    translationFa:`وقت‌شناسی و رفتار عمومی بخش‌های مهمی از زندگی روزمره در هر کشوری هستند. بااین‌حال، مردم مکان‌های مختلف همیشه دربارهٔ رفتار مؤدبانه توافق ندارند. در بعضی فرهنگ‌ها، زمان‌بندی بسیار جدی است. مردم روزهای خود را با دقت برنامه‌ریزی می‌کنند و تلاش می‌کنند برای هر جلسه‌ای به‌موقع برسند. اگر پنج دقیقه برای کار یا یک مهمانی شام دیر کنید، ممکن است دیگران شما را بی‌ادب یا تنبل بدانند. هنگام استفاده از حمل‌ونقل عمومی، مسافران با صبر در صف می‌ایستند و منتظر نوبت خود می‌مانند تا سوار اتوبوس شوند. آن‌ها همچنین هنگام صحبت با تلفن صدای خود را پایین نگه می‌دارند تا مزاحم مسافران دیگر نشوند.
-
-در فرهنگ‌های دیگر، مردم زمان را منعطف‌تر می‌بینند. روابط شخصی مهم‌تر از برنامه‌های زمانی دقیق هستند. بیست یا سی دقیقه دیر رسیدن به یک رویداد اجتماعی کاملاً عادی است و هیچ‌کس عصبانی نمی‌شود. مردم دوست دارند آزادانه صحبت کنند و احساسات خود را در فضاهای عمومی آشکارا بیان کنند. ممکن است در خیابان یا رستوران صدای گفت‌وگوهای بلند و خنده را بشنوید.
-
-هیچ‌یک از این دو شیوهٔ زندگی اشتباه نیست؛ آن‌ها فقط عادت‌های اجتماعی متفاوتی هستند. وقتی به کشور دیگری سفر می‌کنید، بهتر است رفتار مردم محلی را مشاهده کنید. اگر تلاش کنید خود را با هنجارهای محلی وفق دهید و با مردم محترمانه رفتار کنید، به‌راحتی دوست پیدا می‌کنید و از مشکلات غیرضروری دور می‌مانید.`,
-    glossary:{"punctuality":{fa:"وقت‌شناسی",type:"vocab"},"public behavior":{fa:"رفتار عمومی",type:"vocab"},"arrive on time":{fa:"به موقع رسیدن",type:"colloc"},"public transport":{fa:"حمل و نقل عمومی",type:"vocab"},"commuters":{fa:"مسافران روزانه",type:"vocab"},"keep their voice down":{fa:"صدای خود را پایین نگه داشتن",type:"idiom"},"express their feelings openly":{fa:"احساسات خود را آشکارا بروز دادن",type:"idiom"},"adapt to local norms":{fa:"خود را با هنجارهای محلی وفق دادن",type:"colloc"},"treat people respectfully":{fa:"با احترام با مردم رفتار کردن",type:"colloc"}},
-    hl:["carefully","patiently","openly","respectfully","easily"],
-    gist:{q:"What is the main topic of the text?",o:["How public transport systems operate around the world.","How cultural rules about time and public behavior differ.","Why talking on mobile phones is bad for your health.","The history of business schedules in modern cities."],a:1,ex:"The text compares how different cultures view time and public behavior."},
-    detailed:[
-     {q:"In cultures with strict schedules, how do people view being late for a meeting?",o:["They see it as normal and friendly behavior.","They think it shows you are rude or lazy.","They consider it a good way to start a conversation.","They do not notice it at all."],a:1},
-     {q:"What do passengers do on public transport in quiet cultures?",o:["They talk loudly with strangers on the bus.","They keep their voice down when using their phone.","They cut in line to enter the train quickly.","They play music without using headphones."],a:1},
-     {q:"What advice does the text give to international travelers?",o:["Always force other people to follow your own habits.","Avoid talking to anyone in public places.","Observe local customs and adapt to local norms.","Travel only to countries that have strict schedules."],a:2}]},
-   {title:"Text 2: Can Adults Change Their Behavior?",
-    topic:"Can Adults Change Their Behavior?",
-    text:`Many people wonder if adults can change their personality or if their habits remain the same forever. In the past, scientists believed that after a person turned thirty, their character was set. However, new studies show that our brains can continue to learn and change throughout our whole life. This ability to form new habits is very useful for personal growth.
-
-If you want to change a specific behavior, you must practice it deliberately every day. For example, imagine a person who is very shy in public. When they enter a room full of strangers, they usually stay quiet and avoid eye contact. If this person wants to become more outgoing, they can start small. They can try to smile at a coworker, say hello to a neighbor, or speak up once in a business meeting.
-
-At first, doing these new actions feels uncomfortable and difficult. But if they repeat these actions regularly, their brain builds new pathways. After a few months, speaking to people becomes much easier and feels natural. It takes hard work and patience, but anyone can improve their confidence and learn new social skills if they try.`,
-    translationFa:`بسیاری از مردم می‌پرسند آیا بزرگسالان می‌توانند شخصیت خود را تغییر دهند یا عادت‌هایشان برای همیشه ثابت می‌ماند. در گذشته، دانشمندان باور داشتند که شخصیت فرد پس از رسیدن به سی‌سالگی تثبیت می‌شود. بااین‌حال، پژوهش‌های جدید نشان می‌دهند که مغز ما می‌تواند در تمام طول زندگی به یادگیری و تغییر ادامه دهد. این تواناییِ شکل دادن به عادت‌های جدید برای رشد فردی بسیار مفید است.
-
-اگر می‌خواهید رفتار مشخصی را تغییر دهید، باید هر روز آگاهانه آن را تمرین کنید. برای مثال، فردی را تصور کنید که در جمع بسیار خجالتی است. وقتی وارد اتاقی پر از افراد غریبه می‌شود، معمولاً ساکت می‌ماند و از تماس چشمی پرهیز می‌کند. اگر بخواهد اجتماعی‌تر شود، می‌تواند با قدم‌های کوچک شروع کند؛ مثلاً به همکارش لبخند بزند، به همسایه‌اش سلام کند یا در یک جلسهٔ کاری یک بار نظرش را بیان کند.
-
-در ابتدا، انجام این کارهای تازه ناراحت‌کننده و دشوار به نظر می‌رسد. اما اگر آن‌ها را مرتب تکرار کند، مغزش مسیرهای عصبی جدیدی می‌سازد. پس از چند ماه، صحبت کردن با دیگران بسیار آسان‌تر می‌شود و طبیعی به نظر می‌رسد. این کار به تلاش و صبر نیاز دارد، اما هرکسی می‌تواند اعتمادبه‌نفس خود را تقویت کند و مهارت‌های اجتماعی جدیدی بیاموزد، اگر تلاش کند.`,
-    glossary:{"character was set":{fa:"شخصیت ثابت بود",type:"idiom"},"personal growth":{fa:"رشد شخصی",type:"vocab"},"practice it deliberately":{fa:"با قصد تمرین کردن",type:"colloc"},"avoid eye contact":{fa:"از تماس چشمی اجتناب کردن",type:"colloc"},"outgoing":{fa:"برون‌گرا",type:"vocab"},"start small":{fa:"از کارهای کوچک شروع کردن",type:"idiom"},"builds new pathways":{fa:"مسیرهای جدید می‌سازد",type:"idiom"},"social skills":{fa:"مهارت‌های اجتماعی",type:"vocab"}},
-    hl:["deliberately","quiet","uncomfortable","regularly","easily","naturally"],
-    gist:{q:"What is the primary message of this article?",o:["Personality cannot be changed after the age of thirty.","Adults can change their habits and behavior through daily practice.","Shy people should avoid working in big corporate offices.","Learning new social skills is impossible for older adults."],a:1,ex:"Adults can change habits through daily practice."},
-    detailed:[
-     {q:"What did scientists believe about adult personality in the past?",o:["That personality changed every five years automatically.","That character was set and fixed after age thirty.","That children had more fixed personalities than adults.","That brain habits could only change through medical treatment."],a:1},
-     {q:"What is a recommended first step for a shy person who wants to be more outgoing?",o:["Give a long speech to a huge crowd immediately.","Avoid all social events and stay at home.","Start small by smiling at a coworker or saying hello.","Change jobs every month to meet new people."],a:2},
-     {q:"What happens when a person repeats new behaviors regularly over several months?",o:["Their brain builds new pathways and the action feels natural.","They lose their ability to focus on daily work tasks.","They quickly return to their old negative habits.","Their stress levels increase permanently."],a:0}]}
-  ],
-  writing:{prompts:[
-   {title:"Prompt 1",text:"Describe public etiquette and punctuality habits in your home country. How should foreign tourists behave when they visit?"},
-   {title:"Prompt 2",text:"Think of a habit or behavioral trait you would like to change about yourself. What small steps can you take to improve it?"}],
-   sample:`In my home country, punctuality is highly valued in professional settings, but social gatherings tend to be more relaxed. In business meetings, people are expected to arrive on time, and being late is considered disrespectful.`}
-},
-"1B":{unit:1,letter:"B",ready:false,title:"Personality Traits & Degree Adverbs",titleFa:"ویژگی‌های شخصیتی"},
-"1C":{unit:1,letter:"C",ready:false,title:"Managing Irritating Habits",titleFa:"مدیریت عادت‌های آزاردهنده"},
-"1D":{unit:1,letter:"D",ready:false,title:"Professional Branding & Online Personas",titleFa:"برندسازی حرفه‌ای"},
-"2A":{unit:2,letter:"A",ready:false,title:"Transformative Travel",titleFa:"سفرهای تحول‌آفرین"},
-"2B":{unit:2,letter:"B",ready:false,title:"Important Milestones",titleFa:"نقاط عطف زندگی"},
-"2C":{unit:2,letter:"C",ready:false,title:"Active Inquiry",titleFa:"پرسشگری فعال"},
-"2D":{unit:2,letter:"D",ready:false,title:"Travel Writing",titleFa:"سفرنامه‌نویسی"},
-"3A":{unit:3,letter:"A",ready:false,title:"Architectural Marvels",titleFa:"شاهکارهای معماری"},
-"3B":{unit:3,letter:"B",ready:false,title:"Environmental Conservation",titleFa:"حفاظت از محیط زیست"},
-"3C":{unit:3,letter:"C",ready:false,title:"Supportive Listening",titleFa:"شنوندگی حمایت‌گر"},
-"3D":{unit:3,letter:"D",ready:false,title:"World Records",titleFa:"رکوردهای جهانی"}
-};
-const UNITS={1:"The Way We Are",2:"Experiences",3:"Wonders of the World"};
-const ORDER=["1A","1B","1C","1D","2A","2B","2C","2D","3A","3B","3C","3D"];
-const LESSON_CODES={"1A":"TS3-A7K4-Q9M2","1B":"TS3-B8R6-L3X1","1C":"TS3-C5N9-V2K7","1D":"TS3-D4P8-H6W3","2A":"TS3-A9F2-J7Q5","2B":"TS3-B6T3-M8R1","2C":"TS3-C7Y4-K2N9","2D":"TS3-D8L5-P4V6","3A":"TS3-A3W7-R9H2","3B":"TS3-B5M8-X1Q4","3C":"TS3-C9K6-T3F7","3D":"TS3-D2V5-N8J4"};
 const TEACHER_PASSWORD="BLASTER99";
 
 /* Defensive storage + JSON parsing: mobile browsers may retain malformed or unavailable storage. */
@@ -666,6 +547,9 @@ function saveS(){storage.setItem("ts3_srs",JSON.stringify(srs));}
 function saveM(){storage.setItem("ts3_metrics",JSON.stringify(metrics));storage.setItem("ts3_lesson_xp",JSON.stringify(lessonXP));storage.setItem("ts3_activity_log",JSON.stringify(activityLog.slice(-800)));}
 function saveT(){storage.setItem("ts3_time",JSON.stringify(timeSpent));storage.setItem("ts3_time_days",JSON.stringify(timeDays));}
 function markDone(k){const isNew=!progress[k];progress[k]=true;saveP();return isNew;}
+function checkGrammarDone(){const G=LESSONS[S.lesson].grammar;if(!G||(G.testSets||[]).length)return;if(S.cards.filter(x=>x.type==="grammar-check").every(gc=>{const el=$(`#feed .card[data-idx="${gc._i}"]`);return el&&el.querySelector(".opt:disabled");}))markDone(S.lesson+"_grammar");}
+function syncVocab(){const k=S.lesson+"_";if(progress[k+"vocab_flash"]&&progress[k+"vocab_match"]&&progress[k+"vocab_gap"])markDone(k+"vocab");}
+function checkGapDone(){if(S.cards.filter(x=>x.type==="gap").every(gc=>{const el=$(`#feed .card[data-idx="${gc._i}"]`);return el&&el.querySelector(".opt:disabled");})){markDone(S.lesson+"_vocab_gap");syncVocab();}}
 function bumpMetric(k,n=1,meta={}){metrics[k]=(metrics[k]||0)+n;activityLog.push({kind:k,n,lesson:S.lesson,at:Date.now(),...meta});saveM();}
 function awardXP(n,reason){lessonXP[S.lesson]=(lessonXP[S.lesson]||0)+n;bumpMetric("xp",n,{reason});}
 function logErr(t,detail){metrics["err_items"]=metrics["err_items"]||[];metrics["err_items"].unshift({...detail,category:t,at:Date.now(),lesson:S.lesson});metrics["err_items"]=metrics["err_items"].slice(0,40);saveM();}
@@ -708,8 +592,8 @@ function speak(t, btnEl){
   try{window.speechSynthesis.cancel();}catch(e){}
   const u=new SpeechSynthesisUtterance(t);
   u.lang="en-US"; u.rate=.9;
-  u.onend=()=>{isSpeaking=false;if(S.activeSpeakBtn){S.activeSpeakBtn.classList.remove("speaking");S.activeSpeakBtn=null;}};
-  u.onerror=()=>{isSpeaking=false;if(S.activeSpeakBtn){S.activeSpeakBtn.classList.remove("speaking");S.activeSpeakBtn=null;}};
+  u.onend=()=>{if(currentUtterance!==u)return;isSpeaking=false;if(S.activeSpeakBtn){S.activeSpeakBtn.classList.remove("speaking");S.activeSpeakBtn=null;}};
+  u.onerror=()=>{if(currentUtterance!==u)return;isSpeaking=false;if(S.activeSpeakBtn){S.activeSpeakBtn.classList.remove("speaking");S.activeSpeakBtn=null;}};
   currentUtterance=u;
   isSpeaking=true;
   if(btnEl){if(S.activeSpeakBtn)S.activeSpeakBtn.classList.remove("speaking");btnEl.classList.add("speaking");S.activeSpeakBtn=btnEl;}
@@ -725,7 +609,7 @@ function stopSpeak(){
 /* ============================================================
    UNLOCK LOGIC
    ============================================================ */
-function isLessonComplete(id){const L=LESSONS[id];if(!L||!L.ready)return false;return !!progress[id+"_reading"]; }
+function isLessonComplete(id){const L=LESSONS[id];if(!L||!L.ready)return false;return ["vocab",...(L.grammar?["grammar"]:[]),"reading","writing"].every(k=>progress[id+"_"+k]);}
 function isUnlocked(id){if(teacherMode)return true;const i=ORDER.indexOf(id);if(i<=0)return true;return isLessonComplete(ORDER[i-1]);}
 function moduleUnlocked(mod){
   if(teacherMode)return true;
@@ -759,34 +643,31 @@ function buildFeed(id){
 
   push({type:"overview",section:"Overview"});
 
-  push({type:"section-intro",section:"Vocabulary",num:"01",name:"Vocabulary",desc:`${L.vocab.length} expressions to learn. Tap a card to flip it.`,count:L.vocab.length});
+  push({type:"section-intro",section:"Vocabulary",num:"01",name:"Vocabulary",desc:`${L.vocab.length} expressions to learn. Tap a card to flip it, or turn on Auto-reveal.`,count:L.vocab.length});
   L.vocab.forEach((v,i)=>push({type:"vocab",section:"Vocabulary",idx:i,total:L.vocab.length,word:v[0],fa:v[2],ex:v[3],kind:v[1]}));
 
-  push({type:"section-intro",section:"Matching",num:"02",name:"Matching",desc:"Connect each expression with its meaning. Two short sets.",count:2});
-  push({type:"matching",section:"Matching",set:1,pairs:L.vocab.slice(0,5)});
-  push({type:"matching",section:"Matching",set:2,pairs:L.vocab.slice(5,10)});
+  push({type:"section-intro",section:"Matching",num:"02",name:"Matching",desc:"Connect each expression with its meaning. Short sets of five.",count:2});
+  for(let s=0;s*5<L.vocab.length;s++)push({type:"matching",section:"Matching",set:s+1,sets:Math.ceil(L.vocab.length/5),pairs:L.vocab.slice(s*5,s*5+5)});
 
   push({type:"section-intro",section:"Gap-fill",num:"03",name:"Gap-fill",desc:"Fill in the missing expression. Ten questions in context.",count:10});
   const gaps=buildGapfill(L).slice(0,10);
   gaps.forEach((q,i)=>push({type:"gap",section:"Gap-fill",idx:i,total:gaps.length,...q}));
 
-  if(moduleUnlocked("grammar")||progress[id+"_grammar"]){
+  if(L.grammar){
     push({type:"section-intro",section:"Grammar",num:"04",name:"Grammar",desc:`${L.grammar.points.length} points. Read the Farsi explanation, then check yourself.`,count:L.grammar.points.length*2});
     L.grammar.points.forEach((g,i)=>{
       push({type:"grammar-teach",section:"Grammar",idx:i,total:L.grammar.points.length,title:g.title,body:g.html});
       g.qs.forEach((q,qi)=>push({type:"grammar-check",section:"Grammar",idx:i,qIdx:qi,topic:g.title,...q}));
     });
-  } else {
-    push({type:"locked-placeholder",section:"Locked",target:"Grammar",prereq:"Vocabulary"});
   }
 
-  if(moduleUnlocked("grammar")||progress[id+"_grammar"]){
+  if(L.grammar&&(L.grammar.testSets||[]).length){
     const allQ=L.grammar.testSets.flatMap(s=>s.qs);
-    push({type:"section-intro",section:"Test",num:"05",name:"Test",desc:`${allQ.length} questions. One per card. Needs 70% to unlock Passages.`,count:allQ.length});
+    push({type:"section-intro",section:"Test",num:"05",name:"Test",desc:`${allQ.length} questions. One per card. Score 70% to complete Grammar.`,count:allQ.length});
     allQ.forEach((q,i)=>push({type:"test-q",section:"Test",idx:i,total:allQ.length,...q}));
   }
 
-  if(progress[id+"_grammar"]){
+  if(L.grammar&&L.grammar.passages&&L.grammar.passages.length){
     push({type:"section-intro",section:"Passages",num:"06",name:"Passages",desc:"Read each passage, then retell it in your own words using the keywords.",count:L.grammar.passages.length});
     L.grammar.passages.forEach((p,i)=>push({type:"passage",section:"Passages",idx:i,...p}));
   }
@@ -797,6 +678,7 @@ function buildFeed(id){
       push({type:"reading-skim",section:"Reading",idx:i,...t});
       push({type:"reading-scan",section:"Reading",idx:i,...t});
       push({type:"reading-full",section:"Reading",idx:i,...t});
+      for(let qi=1;qi<(t.detailed||[]).length;qi++)push({type:"reading-scan",section:"Reading",idx:i,qi,...t});
     });
   } else {
     push({type:"locked-placeholder",section:"Locked",target:"Reading",prereq:"Grammar"});
@@ -809,16 +691,14 @@ function buildFeed(id){
     push({type:"locked-placeholder",section:"Locked",target:"Writing",prereq:"Reading"});
   }
 
+  cards.forEach(c=>{if(c.type==="section-intro")c.count=cards.filter(x=>x.section===c.section&&x.type!=="section-intro").length;});
   push({type:"wrap",section:"Wrap"});
   return cards;
 }
 
 function buildGapfill(lessonData){
   const v=(lessonData&&lessonData.vocab)||[], out=[];
-  const overrides=[
-    {s:"Workplace relationships are built on _____.",o:["mutual respect","quick decisions","tight deadlines","personal ambition"],a:0,correct:"mutual respect"},
-    {s:"We should take a taxi because we are _____ on time.",o:["tight","early","flexible","comfortable"],a:0,correct:"tight"}
-  ];
+  const overrides=(lessonData&&lessonData.gapOverrides)||[];
   overrides.forEach(q=>{const o=shuffle(q.o);out.push({...q,o,a:o.indexOf(q.correct)});});
   const used=new Set(out.map(x=>x.correct));
   for(const item of shuffle(v)){
@@ -862,12 +742,12 @@ function renderOverview(c){
   const L=LESSONS[S.lesson];
   const mods=[
     {key:"vocab",name:"Vocabulary",icon:"📚",meta:`${L.vocab.length} expressions`},
-    {key:"grammar",name:"Grammar",icon:"📝",meta:L.grammar?`${L.grammar.points.length} points · ${L.grammar.testSets.flatMap(s=>s.qs).length} Qs`:""},
+    {key:"grammar",name:"Grammar",icon:"📝",meta:L.grammar?`${L.grammar.points.length} points · ${((L.grammar&&L.grammar.testSets)||[]).flatMap(s=>s.qs).length} Qs`:""},
     {key:"reading",name:"Reading",icon:"📖",meta:`${L.texts.length} articles`},
     {key:"writing",name:"Writing",icon:"✍️",meta:`${L.writing.prompts.length} prompts`}
   ].filter(m=>m.meta);
-  const done=progress[S.lesson+"_writing"]?4:progress[S.lesson+"_reading"]?3:progress[S.lesson+"_grammar"]?2:progress[S.lesson+"_vocab"]?1:0;
-  const pct=Math.round((done/4)*100);
+  const done=mods.filter(m=>progress[S.lesson+"_"+m.key]).length;
+  const pct=Math.round((done/mods.length)*100);
   const modsHtml=mods.map(m=>{
     const mDone=progress[S.lesson+"_"+m.key];
     const mUnlocked=moduleUnlocked(m.key)||mDone;
@@ -888,7 +768,7 @@ function renderOverview(c){
       <p class="overview-tip">${esc(L.tip)}</p>
     </div>
     <div class="overview-progress">
-      <div class="row-between"><span>Lesson progress</span><span>${done} / 4 modules · ${pct}%</span></div>
+      <div class="row-between"><span>Lesson progress</span><span>${done} / ${mods.length} modules · ${pct}%</span></div>
       <div class="bar"><div class="fill" id="ovFill" style="width:${pct}%"></div></div>
     </div>
     <div class="overview-modules">${modsHtml}</div>
@@ -929,6 +809,7 @@ function renderLocked(c){
   `);
 }
 
+function autoRevLabel(){return "⏱ Auto-reveal: "+(storage.getItem("ts3_auto_reveal")==="1"?"On":"Off");}
 function renderVocab(c){
   const pct=((c.idx+1)/c.total)*100;
   return wrapCard(c,`
@@ -937,7 +818,7 @@ function renderVocab(c){
       <div class="bar"><i style="width:${pct}%"></i></div>
       <span>${c.idx+1} / ${c.total}</span>
     </div>
-    <div class="flashcard" data-flip="${c._i}">
+    <div class="flashcard" data-flip="${c._i}" role="button" tabindex="0" aria-label="Flip card">
       <div class="flashcard-face front">
         
         <div class="word">${esc(c.word)}</div>
@@ -955,7 +836,8 @@ function renderVocab(c){
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
         <span class="lbl">Listen</span>
       </button>
-      <button class="speak-btn" data-add="${escAttr(c.word)}" data-fa="${escAttr(c.fa)}">+ Review</button>
+      <button class="speak-btn" data-autorev>${autoRevLabel()}</button>
+      <button class="speak-btn" data-add="${escAttr(c.word)}" data-fa="${escAttr(c.fa)}" data-ex="${escAttr(c.ex)}">+ Review</button>
     </div>
   `);
 }
@@ -963,7 +845,7 @@ function renderVocab(c){
 function renderMatching(c){
   const fa=shuffle(c.pairs.map((p,i)=>({text:p[2],idx:i})));
   return wrapCard(c,`
-    <div class="kicker">Matching · Set ${c.set} of 2</div>
+    <div class="kicker">Matching · Set ${c.set} of ${c.sets||2}</div>
     <h2 class="h-med">Match each expression to its meaning.</h2>
     <div class="match" data-match="${c._i}">
       <div class="match-col">
@@ -1034,7 +916,7 @@ function renderPassage(c){
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
         <span class="lbl">Listen</span>
       </button>
-      <button class="speak-btn" data-show-fa="${c._i}">🌐 Farsi</button>
+      ${c.translationFa?`<button class="speak-btn" data-show-fa="${c._i}">🌐 Farsi</button>`:""}
     </div>
     <div class="fb fa-hint" data-fa-fb="${c._i}" style="display:none;background:var(--card-2);color:var(--fg-soft);font-family:var(--farsi);direction:rtl;text-align:right;line-height:1.9">${esc(c.translationFa||"")}</div>
   `);
@@ -1063,11 +945,11 @@ function renderReadingSkim(c){
 }
 
 function renderReadingScan(c){
-  const q=c.detailed[0];
+  const q=c.detailed[c.qi||0];
   const opts=shuffle(q.o.map((o,i)=>({o,i})));
   const secs=scanTime(c.text);
   return wrapCard(c,`
-    <div class="kicker">Article ${c.idx+1} · Scan</div>
+    <div class="kicker">Article ${c.idx+1} · ${c.qi?"Check "+c.qi:"Scan"}</div>
     <div class="soft-timer" data-soft-timer data-secs="${secs}">
       <div class="bar-wrap"><div class="bar-fill" data-soft-bar></div></div>
       <div class="label"><span>Suggested scan time</span><b data-soft-time>${secs}s</b></div>
@@ -1098,7 +980,7 @@ function renderReadingFull(c){
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
         <span class="lbl">Listen</span>
       </button>
-      <button class="speak-btn" data-show-fa="${c._i}">🌐 Farsi</button>
+      ${c.translationFa?`<button class="speak-btn" data-show-fa="${c._i}">🌐 Farsi</button>`:""}
       <button class="speak-btn" data-mark-read="${c.idx}">✓ Mark read</button>
     </div>
     <div class="fb fa-hint" data-fa-fb="${c._i}" style="display:none;background:var(--card-2);color:var(--fg-soft);font-family:var(--farsi);direction:rtl;text-align:right;line-height:1.9">${esc(c.translationFa||"")}</div>
@@ -1117,9 +999,9 @@ function renderWriting(c){
       <span class="lbl">Suggested time</span>
       <button class="btn-mini" data-start-timer="${c._i}">Start</button>
     </div>
-    <textarea class="writing" data-write="${c._i}" placeholder="Write your response here…">${esc(S.answers["w-"+c._i]||"")}</textarea>
+    <textarea class="writing" data-write="${c._i}" placeholder="Write your response here…">${esc(S.answers["w-"+c._i]||storage.getItem("ts3_draft_"+S.lesson+"_"+c.idx)||"")}</textarea>
     <div class="row" style="justify-content:flex-end;margin-top:10px">
-      <button class="speak-btn" data-sample="${c._i}">👁 Show sample</button>
+      ${c.sample?`<button class="speak-btn" data-sample="${c._i}">👁 Show sample</button>`:""}
     </div>
     <div class="fb" data-sample-fb="${c._i}"></div>
   `);
@@ -1131,11 +1013,11 @@ function renderWrap(c){
     <div class="center">
       <div class="kicker">Session complete</div>
       <h1 class="h-big">Nice work.</h1>
-      <p class="p" style="max-width:34ch">You've reached the end of the Lesson 1A feed.</p>
+      <p class="p" style="max-width:34ch">You've reached the end of Lesson ${S.lesson}.</p>
     </div>
     <div class="wrap-stats">
       <div class="wrap-stat"><div class="n">${L.vocab.length}</div><div class="l">Phrases</div></div>
-      <div class="wrap-stat"><div class="n">${L.grammar.testSets.flatMap(s=>s.qs).length}</div><div class="l">Questions</div></div>
+      <div class="wrap-stat"><div class="n">${((L.grammar&&L.grammar.testSets)||[]).flatMap(s=>s.qs).length}</div><div class="l">Questions</div></div>
       <div class="wrap-stat"><div class="n">${L.texts.length}</div><div class="l">Articles</div></div>
     </div>
     <div style="display:flex;flex-direction:column;gap:10px;align-items:center">
@@ -1152,7 +1034,7 @@ function scanTime(text){const w=text.trim().split(/\s+/).length;return Math.max(
    ============================================================ */
 function richText(text,glossary,hlList){
   glossary=glossary||{}; hlList=(hlList||[]).map(h=>h.toLowerCase());
-  const sentences=text.split(/(?<=[.!?])\s+/).filter(s=>s.trim().length);
+  const sentences=(text.match(/[^.!?]+(?:[.!?]+["')\]]*)?\s*/g)||[text]).map(s=>s.trim()).filter(Boolean);
   return sentences.map(sent=>{
     const rendered=renderSentence(sent,glossary,hlList);
     return `<span class="sent" data-sent="${escAttr(sent.trim())}">${rendered}</span>`;
@@ -1207,7 +1089,7 @@ async function lookupWord(word){
     const r=await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(key)}&langpair=en|fa`,{cache:"no-store"});
     const d=await r.json();
     const val=String(d?.responseData?.translatedText||"").trim();
-    if(val&&val.toLowerCase()!==key){dictCache[key]=val;saveDict();return val;}
+    if(val&&val.toLowerCase()!==key&&!/MYMEMORY|INVALID|QUERY LENGTH/i.test(val)){dictCache[key]=val;saveDict();return val;}
   }catch(e){}
   return "";
 }
@@ -1215,6 +1097,7 @@ function localWordMeaning(word){
   const L=LESSONS[S.lesson]; if(!L)return "";
   const key=String(word||"").toLowerCase().replace(/[^a-z'-]/g,"");
   if(!key)return "";
+  if(typeof WORDS!=="undefined"){for(const k of [key,key.replace(/(ing|ed|es|s|d)$/,"")])if(WORDS[k])return WORDS[k];}
   // vocab
   for(const v of (L.vocab||[])){
     if(String(v[0]).toLowerCase()===key)return v[2];
@@ -1261,14 +1144,16 @@ function showWordPopup(anchorEl,word,fa){
     <i id="popupMeaning">${fallbackFa?esc(fallbackFa):'<span class="loading">Looking up…</span>'}</i>
     <div class="actions">
       <button class="mini" data-popup-speak="${escAttr(word)}">🔊 Play</button>
+      <button class="mini" data-popup-sent>Sentence</button>
       <button class="mini" data-popup-add="${escAttr(word)}" data-popup-fa="${escAttr(fallbackFa)}">+ Card</button>
     </div>`;
   showInlinePopup(anchorEl,html);
   const popup=$("#wordPopup");
   popup.querySelector("[data-popup-speak]").onclick=e=>{e.stopPropagation();speak(word);};
+  popup.querySelector("[data-popup-sent]").onclick=e=>{e.stopPropagation();const se=anchorEl.closest(".sent");if(se){document.querySelectorAll(".sent.highlighted").forEach(x=>x.classList.remove("highlighted"));se.classList.add("highlighted");showSentencePopup(se,se.dataset.sent,"");}};
   popup.querySelector("[data-popup-add]").onclick=e=>{
     e.stopPropagation();
-    addSrs({type:"vocab",front:word,backFa:fallbackFa||"",lesson:S.lesson});
+    addSrs({type:"vocab",front:word,backFa:(popup.querySelector("[data-popup-add]").dataset.popupFa||fallbackFa||""),lesson:S.lesson});
     sChime();
     popup.querySelector("[data-popup-add]").textContent="Added ✓";
     setTimeout(hidePopup,700);
@@ -1276,7 +1161,7 @@ function showWordPopup(anchorEl,word,fa){
   if(!fallbackFa){
     lookupWord(word).then(val=>{
       const el=document.getElementById("popupMeaning");
-      if(el)el.textContent=val||"Meaning unavailable offline.";
+      if(el)el.textContent=val?val+"  · ترجمه خودکار":"Meaning unavailable offline.";
       const addBtn=popup.querySelector("[data-popup-add]");
       if(addBtn)addBtn.dataset.popupFa=val||"";
     });
@@ -1309,7 +1194,7 @@ async function lookupSentence(sent){
     const r=await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(sent)}&langpair=en|fa`,{cache:"no-store"});
     const d=await r.json();
     const val=String(d?.responseData?.translatedText||"").trim();
-    if(val){dictCache[key]=val;saveDict();return val;}
+    if(val&&!/MYMEMORY|INVALID|QUERY LENGTH/i.test(val)){dictCache[key]=val;saveDict();return val;}
   }catch(e){}
   return "";
 }
@@ -1331,12 +1216,12 @@ function hideChrome(){
 /* ============================================================
    PAGE NAVIGATION
    ============================================================ */
-function showPage(page){
+function showPage(page){document.body.dataset.page=page;if(page!=="lesson"){if(observer)observer.disconnect();stopAllSoftTimers();}
   S.page=page;
   $("#home").classList.toggle("hidden",page!=="home");
   $("#feed").classList.toggle("hidden",page==="home");
   hideChrome();
-  if(page==="home"){renderHome();stopSpeak();}
+  if(page==="home"){renderHome();stopSpeak();startTime("shelf");}
   else if(page==="lesson"){}
   else if(page==="practice"){renderPracticePage();}
   else if(page==="progress"){renderProgressPage();}
@@ -1346,67 +1231,31 @@ function showPage(page){
 /* ============================================================
    HOME
    ============================================================ */
+function lessonPct(id){const L=LESSONS[id],ks=["vocab",...(L.grammar?["grammar"]:[]),"reading","writing"];return Math.round(ks.filter(k=>progress[id+"_"+k]).length/ks.length*100);}
 function renderHome(){
   const home=$("#homeInner");
-  const last=safeJSON(storage.getItem("ts3_last_lesson"),null);
-  const resumeLesson=last&&LESSONS[last]&&LESSONS[last].ready&&isUnlocked(last)?last:null;
-  const resumeLabel=resumeLesson?`Lesson ${resumeLesson} · ${LESSONS[resumeLesson].title}`:null;
-
-  let html=`
-    <div class="home-brand">Touchstone 3 · Units 1–3</div>
-    <h1 class="home-title">Hello${userName?" <b>"+esc(userName)+"</b>":""}<br><span style="color:var(--accent)">Welcome to</span><br>Touchstone 3 Companion</h1>
-  `;
-  if(resumeLesson){
-    html+=`<button class="resume-card" data-resume="${resumeLesson}">
-      <span class="ic">▶</span>
-      <div class="info">
-        <div class="kicker">Continue</div>
-        <div class="title">${esc(resumeLabel)}</div>
-      </div>
-      <span class="arrow">→</span>
-    </button>`;
-  }
-  const dueCards=srs.filter(c=>c.nextReview<=Date.now()).length;
-  html+=`<button class="resume-card review-prompt" data-review-prompt style="margin-top:14px;border-color:color-mix(in srgb,var(--c-vocab) 45%,var(--line));background:linear-gradient(135deg,color-mix(in srgb,var(--c-vocab) 16%,var(--card)),var(--card))">
-    <span class="ic">🃏</span><div class="info"><div class="kicker">Word review</div><div class="title">${dueCards?`Review ${dueCards} word${dueCards===1?"":"s"} in Flashcards`:`Keep your vocabulary fresh — visit Flashcards`}</div><div class="desc" style="font-size:12px;color:var(--fg-soft);margin-top:3px">A short review helps you remember what you have learned.</div></div><span class="arrow">→</span>
-  </button>`;
-  html+=`<div class="home-section-head">Lessons</div>`;
+  const last=storage.getItem("ts3_last_lesson");
+  const openable=ORDER.filter(id=>LESSONS[id].ready&&isUnlocked(id));
+  const cur=(last&&openable.includes(last)&&!isLessonComplete(last))?last:(openable.find(id=>!isLessonComplete(id))||openable[openable.length-1]);
+  const due=srs.filter(c=>c.nextReview<=Date.now()).length;
+  const hr=new Date().getHours(),greet=hr<5?"Good night":hr<12?"Good morning":hr<18?"Good afternoon":"Good evening";
+  let h=`<div class="hm-top"><div class="hm-brand">Touchstone 3</div><button class="hm-chip" data-nav="practice">🃏 ${due} due</button></div>
+  <h1 class="hm-hello">${greet}${userName?`, <span>${esc(userName)}</span>`:""}</h1>`;
+  if(cur){const L=LESSONS[cur],p=lessonPct(cur),C=2*Math.PI*26;
+    h+=`<button class="hm-hero" data-open="${cur}"><div class="hm-ring"><svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" class="bg"/><circle cx="30" cy="30" r="26" class="fg" stroke-dasharray="${(C*p/100).toFixed(1)} ${C.toFixed(1)}"/></svg><b>${p}%</b></div><div class="hm-hero-t"><div class="k">${p?"Continue":"Start"} · Lesson ${cur}</div><div class="t">${esc(L.title)}</div><div class="s">${esc(L.titleFa||"")}</div></div><span class="hm-go">→</span></button>`;}
   [1,2,3].forEach(u=>{
-    const ids=ORDER.filter(k=>LESSONS[k].unit===u);
-    html+=`<button class="unit-row" data-unit-toggle="${u}" aria-expanded="false"><span class="un">Unit ${u}</span><span class="ul">${UNITS[u]}</span><span class="unit-chevron">⌄</span></button><div class="unit-lessons" data-unit-lessons="${u}" hidden>`;
-    ids.forEach(id=>{
-      const L=LESSONS[id];
-      const done=isLessonComplete(id);
-      const unlocked=isUnlocked(id);
-      const canOpen=L.ready&&unlocked;
-      const tag=L.ready?(done?'<span class="tile-tag done">Completed</span>':'<span class="tile-tag ready">Ready</span>'):(unlocked?'<span class="tile-tag soon">Soon</span>':'<span class="tile-tag soon">Locked</span>');
-      const tileC=L.ready?"var(--accent)":"var(--muted)";
-      html+=`<button class="tile" style="--tile-c:${tileC}" ${canOpen?`data-open="${id}"`:"disabled"}>
-        <div class="tile-row">
-          <div class="tile-badge" style="color:${tileC}">${id}</div>
-          <div class="tile-body">
-            <div class="tile-title">${esc(L.title)}</div>
-            <div class="tile-meta">${tag}</div>
-          </div>
-        </div>
-      </button>`;
-    });
-    html+=`</div>`;
-  });
-  html+=`
-    <div class="home-links">
-      <button class="home-link" data-nav="practice"><span class="ic">🃏</span>Practice</button>
-      <button class="home-link" data-nav="progress"><span class="ic">📊</span>Progress</button>
-      <button class="home-link" data-nav="settings"><span class="ic">⚙️</span>Settings</button>
-    </div>
-    <div class="home-footer">Feed Version 1.9 - Designed by Ehsan Naeimi Rad</div>
-  `;
-  home.innerHTML=html;
-  home.querySelectorAll("[data-unit-toggle]").forEach(b=>b.onclick=()=>{const panel=home.querySelector(`[data-unit-lessons="${b.dataset.unitToggle}"]`);const opening=panel.hidden;panel.hidden=!opening;b.setAttribute("aria-expanded",String(opening));});
+    const ids=ORDER.filter(k=>LESSONS[k].unit===u),n=ids.filter(isLessonComplete).length;
+    h+=`<button class="unit-row" data-unit-toggle="${u}" aria-expanded="false"><span class="un">Unit ${u}</span><span class="ul">${UNITS[u]}</span><span class="hm-count">${n}/${ids.length}</span><span class="unit-chevron">⌄</span></button><div class="unit-lessons hm-path" data-unit-lessons="${u}" hidden>`;
+    ids.forEach(id=>{const L=LESSONS[id],done=isLessonComplete(id),can=L.ready&&isUnlocked(id);
+      h+=`<button class="hm-node ${done?"done":id===cur?"now":can?"":"lock"}" ${can?`data-open="${id}"`:"disabled"}><span class="dot">${done?"✓":can?id:"🔒"}</span><span class="tx"><span class="tt">${esc(L.title)}</span><span class="fa">${esc(L.titleFa||"")}</span></span></button>`;});
+    h+=`</div>`;});
+  h+=`<nav class="hm-nav"><button class="on">🏠<span>Learn</span></button><button data-nav="practice">🃏<span>Practice</span></button><button data-nav="progress">📊<span>Progress</span></button><button data-nav="settings">⚙️<span>Settings</span></button></nav>`;
+  home.innerHTML=h;
+  home.querySelectorAll("[data-unit-toggle]").forEach(b=>b.onclick=()=>{const p=home.querySelector(`[data-unit-lessons="${b.dataset.unitToggle}"]`),o=p.hidden;p.hidden=!o;b.setAttribute("aria-expanded",String(o));});
   home.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openLesson(b.dataset.open));
-  const reviewPrompt=home.querySelector("[data-review-prompt]");if(reviewPrompt)reviewPrompt.onclick=()=>showPage("practice");
-  home.querySelectorAll("[data-resume]").forEach(b=>b.onclick=()=>openLesson(b.dataset.resume));
   home.querySelectorAll("[data-nav]").forEach(b=>b.onclick=()=>showPage(b.dataset.nav));
+  const u0=cur?LESSONS[cur].unit:1,p0=home.querySelector(`[data-unit-lessons="${u0}"]`);
+  if(p0){p0.hidden=false;home.querySelector(`[data-unit-toggle="${u0}"]`).setAttribute("aria-expanded","true");}
 }
 
 /* ============================================================
@@ -1415,7 +1264,7 @@ function renderHome(){
 function openLesson(id){
   if(!LESSONS[id]||!LESSONS[id].ready)return;
   S.lesson=id;
-  S.cards=buildFeed(id);
+  S.testRes={};S.answers={};S.cards=buildFeed(id);
   S.flipped=new Set();
   S.activeIdx=0;
   S.lastSpokenIdx=-1;
@@ -1434,7 +1283,7 @@ function openLesson(id){
   updateHUD(0);
   startTime("learn");
 }
-function closeLesson(){stopSpeak();flushTime();showPage("home");}
+function closeLesson(){stopSpeak();clearInterval(S.writeTimer);S.writeTimer=null;flushTime();showPage("home");}
 
 /* ============================================================
    AUTO-ADVANCE helper
@@ -1462,6 +1311,7 @@ function bindFeed(){
   const vocabTimers=new Map();
   // Vocab flip
   feed.querySelectorAll("[data-flip]").forEach(el=>{
+    el.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();ev.stopPropagation();el.click();}});
     el.addEventListener("click",()=>{
       clearTimeout(vocabTimers.get(+el.dataset.flip));
       el.classList.toggle("flipped");
@@ -1470,12 +1320,19 @@ function bindFeed(){
       // Auto-speak when flipping to back
       if(el.classList.contains("flipped")){
         const card=S.cards[+el.dataset.flip];
-        if(soundOn)speak(card.word);
+        
         
       }
     });
   });
 
+  feed.querySelectorAll("[data-autorev]").forEach(b=>b.addEventListener("click",e=>{
+    e.stopPropagation();
+    const on=storage.getItem("ts3_auto_reveal")==="1";
+    storage.setItem("ts3_auto_reveal",on?"0":"1");
+    feed.querySelectorAll("[data-autorev]").forEach(x=>x.textContent=autoRevLabel());
+    if(!on)scheduleVocabReveal(S.activeIdx);
+  }));
   // Speak buttons (with stop toggle)
   feed.querySelectorAll("[data-speak]").forEach(b=>{
     b.addEventListener("click",e=>{
@@ -1492,7 +1349,7 @@ function bindFeed(){
   feed.querySelectorAll("[data-add]").forEach(b=>{
     b.addEventListener("click",e=>{
       e.stopPropagation();
-      const added=addSrs({type:"vocab",front:b.dataset.add,backFa:b.dataset.fa,lesson:S.lesson});
+      const added=addSrs({type:"vocab",front:b.dataset.add,backFa:b.dataset.fa,ex:b.dataset.ex,lesson:S.lesson});
       sChime();
       b.textContent=added?"Added ✓":"In review";
       setTimeout(()=>{b.textContent="+ Review";},1400);
@@ -1520,7 +1377,7 @@ function bindFeed(){
       grid.querySelectorAll(".mitem").forEach(x=>x.classList.remove("sel"));selected=null;
       if(grid.querySelectorAll(".mitem:not(.matched)").length===0){
         const all=S.cards.filter(x=>x.type==="matching");
-        if(all.every(mc=>{const el=$(`#feed .card[data-idx="${mc._i}"]`);return el&&el.querySelectorAll(".mitem:not(.matched)").length===0;}))markDone(S.lesson+"_vocab_match");
+        if(all.every(mc=>{const el=$(`#feed .card[data-idx="${mc._i}"]`);return el&&el.querySelectorAll(".mitem:not(.matched)").length===0;})){markDone(S.lesson+"_vocab_match");syncVocab();}
         autoAdvance(grid.closest(".card"),800);
       }
     }));
@@ -1541,13 +1398,11 @@ function bindFeed(){
           if(+o.dataset.i===choice&&choice!==c.a)o.classList.add("wrong");
         });
         const fb=card.querySelector(".fb");
-        bumpMetric("answered",1,{skill:"vocab_gap"});
+        bumpMetric("answered",1,{skill:"vocab_gap"});setTimeout(checkGapDone,0);
         if(choice===c.a){
           fb.className="fb show ok";fb.textContent="Correct.";sOK();
           bumpMetric("correct",1,{skill:"vocab_gap"});awardXP(8,"gap");
-          const gapCards=S.cards.filter(x=>x.type==="gap");
-          if(gapCards.every(gc=>{const el=$(`#feed .card[data-idx="${gc._i}"]`);return el&&el.querySelector(".opt:disabled");}))markDone(S.lesson+"_vocab_gap");
-          autoAdvance(card);
+                    autoAdvance(card);
         } else {
           fb.className="fb show bad";fb.textContent="Not quite. The correct option is highlighted.";
           sBad();logErr("gap",{prompt:c.s,answer:c.correct});
@@ -1571,14 +1426,14 @@ function bindFeed(){
           if(+o.dataset.i===choice&&choice!==c.a)o.classList.add("wrong");
         });
         const fb=card.querySelector(".fb");
-        bumpMetric("answered",1,{skill:"grammar_check",topic:c.topic});
+        bumpMetric("answered",1,{skill:"grammar_check",topic:c.topic});setTimeout(checkGrammarDone,0);
         if(choice===c.a){
-          fb.className="fb show ok";fb.textContent="Correct. "+(c.ex||"");sOK();
+          fb.className="fb show ok";fb.innerHTML='<span class="en">Correct.</span><span class="fa-ex">'+esc(c.ex||"")+"</span>";sOK();
           bumpMetric("correct",1,{skill:"grammar_check",topic:c.topic});awardXP(8,"grammar");
           autoAdvance(card);
         } else {
           fb.className="fb show bad";
-          fb.innerHTML=`<span class="en">Answer: <b>${esc(c.o[c.a])}</b><br><span style="font-size:13px;opacity:.9">${esc(c.ex||"")}</span></span>`;
+          fb.innerHTML=`<span class="en">Answer: <b>${esc(c.o[c.a])}</b><br><span class="fa-ex">${esc(c.ex||"")}</span></span>`;
           sBad();logErr("grammar",{prompt:c.q,answer:c.o[c.a]});
         }
       });
@@ -1607,10 +1462,10 @@ function bindFeed(){
           autoAdvance(card);
         } else {
           fb.className="fb show bad";
-          fb.innerHTML=`<span class="en">Answer: <b>${esc(c.o[c.a])}</b><br><span style="font-size:13px;opacity:.9">${esc(c.ex||"")}</span></span>`;
+          fb.innerHTML=`<span class="en">Answer: <b>${esc(c.o[c.a])}</b><br><span class="fa-ex">${esc(c.ex||"")}</span></span>`;
           sBad();logErr("test",{prompt:c.q,answer:c.o[c.a]});
         }
-        if(c.idx===c.total-1&&choice===c.a)markDone(S.lesson+"_g_test");
+        S.testRes=S.testRes||{};S.testRes[c.idx]=choice===c.a?1:0;if(Object.keys(S.testRes).length===c.total){const sc=Object.values(S.testRes).reduce((a,b)=>a+b,0),pc=Math.round(sc/c.total*100);if(pc>=70){markDone(S.lesson+"_g_test");markDone(S.lesson+"_grammar");}fb.insertAdjacentHTML("beforeend",`<span class="en" style="margin-top:8px">Test score: ${sc}/${c.total} (${pc}%) — ${pc>=70?"Grammar complete ✓":"you need 70%. Leave and reopen the lesson to retake the test."}</span>`);}
       });
     });
   });
@@ -1646,7 +1501,7 @@ function bindFeed(){
   feed.querySelectorAll("[data-scan]").forEach(el=>{
     const card=el.closest(".card");
     const c=S.cards[+card.dataset.idx];
-    const q=c.detailed[0];
+    const q=c.detailed[c.qi||0];
     let ans=false;
     el.querySelectorAll(".opt").forEach(b=>{
       b.addEventListener("click",()=>{
@@ -1701,7 +1556,7 @@ function bindFeed(){
       markDone(S.lesson+"_reading_t"+(+i+1));
       b.textContent="✓ Read ✓";
       sChime();
-      if(progress[S.lesson+"_reading_t1"]&&progress[S.lesson+"_reading_t2"])markDone(S.lesson+"_reading");
+      if(LESSONS[S.lesson].texts.every((_,k)=>progress[S.lesson+"_reading_t"+(k+1)]))markDone(S.lesson+"_reading");
     });
   });
 
@@ -1709,7 +1564,7 @@ function bindFeed(){
   feed.querySelectorAll("[data-write]").forEach(ta=>{
     ta.addEventListener("input",()=>{
       S.answers["w-"+ta.dataset.write]=ta.value;
-      if(ta.value.trim().length>20){markDone(S.lesson+"_writing");}
+      const ci=S.cards[+ta.dataset.write];if(ci)storage.setItem("ts3_draft_"+S.lesson+"_"+ci.idx,ta.value);if(ta.value.trim().split(/\s+/).length>=25)markDone(S.lesson+"_writing");
     });
   });
 
@@ -1720,7 +1575,7 @@ function bindFeed(){
       const fb=card.querySelector("[data-sample-fb]");
       const L=LESSONS[S.lesson];
       if(fb.classList.contains("show")){fb.classList.remove("show");b.textContent="👁 Show sample";}
-      else{fb.className="fb show";fb.style.background="rgba(244,211,94,.12)";fb.style.color="var(--fg)";fb.style.whiteSpace="pre-wrap";fb.style.direction="ltr";fb.style.textAlign="left";fb.style.fontSize="14px";fb.textContent=(L.writing.sample||"").trim();b.textContent="🙈 Hide sample";}
+      else{fb.className="fb show";fb.style.background="rgba(244,211,94,.12)";fb.style.color="var(--fg)";fb.style.whiteSpace="pre-wrap";fb.style.direction="ltr";fb.style.textAlign="left";fb.style.fontSize="14px";const cc=S.cards[+b.dataset.sample];fb.textContent=((L.writing.prompts[cc.idx]||{}).sample||L.writing.sample||"").trim();b.textContent="🙈 Hide sample";}
     });
   });
 
@@ -1808,7 +1663,7 @@ function bindFeed(){
 function addSrs(card){
   const id=card.type+"::"+card.front.toLowerCase();
   if(srs.find(c=>c.id===id))return false;
-  srs.push({id,type:card.type,front:card.front,backFa:card.backFa||"",lesson:card.lesson||S.lesson,ease:2.5,interval:0,reps:0,nextReview:Date.now(),createdAt:Date.now()});
+  srs.push({id,type:card.type,front:card.front,backFa:card.backFa||"",ex:card.ex||"",lesson:card.lesson||S.lesson,ease:2.5,interval:0,reps:0,nextReview:Date.now(),createdAt:Date.now()});
   saveS(); return true;
 }
 
@@ -1885,7 +1740,7 @@ function stopAllSoftTimers(){
 
 const pendingVocabReveal=new Map();
 function scheduleVocabReveal(idx){
-  if(storage.getItem("ts3_auto_reveal")==="0")return;
+  if(storage.getItem("ts3_auto_reveal")!=="1")return;
   const c=S.cards[idx]; if(!c||c.type!=="vocab")return;
   clearTimeout(pendingVocabReveal.get(idx));
   pendingVocabReveal.set(idx,setTimeout(()=>{
@@ -1895,7 +1750,7 @@ function scheduleVocabReveal(idx){
     if(soundOn)speak(c.word);
     const next=$(`#feed .card[data-idx="${idx+1}"]`);
     if(next)setTimeout(()=>{if(S.page==="lesson"&&S.activeIdx===idx)next.scrollIntoView({behavior:"smooth",block:"start"});},4000);
-  },3000));
+  },5000));
 }
 
 /* ============================================================
@@ -1955,7 +1810,9 @@ function setupObserver(){
 
 
         const c=S.cards[idx];
-        if(c.type==="vocab"&&c.idx===LESSONS[S.lesson].vocab.length-1){markDone(S.lesson+"_vocab_flash");markDone(S.lesson+"_vocab");}
+        if(c.type==="vocab"&&c.idx===LESSONS[S.lesson].vocab.length-1){markDone(S.lesson+"_vocab_flash");syncVocab();}
+        if(c.type==="wrap")markDone(S.lesson+"_feed");
+        if(c.type==="passage"&&c.idx===LESSONS[S.lesson].grammar.passages.length-1)markDone(S.lesson+"_g_passages");
       }
     });
   },{threshold:[0.55]});
@@ -2009,7 +1866,7 @@ function buildSheetHTML(){
     "Grammar":progress[S.lesson+"_grammar"],
     "Reading":progress[S.lesson+"_reading"],
     "Writing":progress[S.lesson+"_writing"],
-    "Test":progress[S.lesson+"_g_test"],
+    "Test":progress[S.lesson+"_g_test"],"Matching":progress[S.lesson+"_vocab_match"],"Gap-fill":progress[S.lesson+"_vocab_gap"],
     "Passages":progress[S.lesson+"_g_passages"]
   };
   const isSectionLocked=(sec)=>{
@@ -2019,7 +1876,7 @@ function buildSheetHTML(){
 
   let html=`<div class="sheet-hero">
     <div class="k">Lesson ${S.lesson}</div>
-    <div class="t">${esc(LESSONS[S.lesson].title.split("&")[0])}</div>
+    <div class="t">${esc(LESSONS[S.lesson].title)}</div>
     <div class="m">${S.cards.length} cards · tap a section to jump</div>
   </div>`;
 
@@ -2118,34 +1975,51 @@ $("#backBtn").addEventListener("click",()=>{
   else showPage("home");
 });
 
-/* Controlled vertical paging: capture vertical gestures and advance exactly one card.
-   Native momentum scrolling is suppressed for gestures on the feed itself; inner readers keep native scroll. */
+/* Vertical paging: one card per swipe / wheel / key. Inner scrollers keep native scroll until their edge. */
 (()=>{
-  const area=$("#feed");let sx=0,sy=0,dx=0,dy=0,tracking=false,inner=false,claimed=false;
-  const getCurrent=()=>{
-    const cards=[...area.querySelectorAll(".card")];if(!cards.length)return {cards,i:-1};
-    let i=Number.isFinite(S.activeIdx)?S.activeIdx:0;i=Math.max(0,Math.min(cards.length-1,i));return {cards,i};
-  };
-  area.addEventListener("touchstart",e=>{
-    if(S.page!=="lesson"||e.touches.length!==1){tracking=false;return;}
-    const t=e.touches[0];sx=t.clientX;sy=t.clientY;dx=dy=0;tracking=true;claimed=false;
-    inner=!!e.target.closest(".reading-scroll,.sheet,.word-popup,textarea,input,select,[contenteditable=true]");
-  },{passive:true});
+  const area=$("#feed");let sx=0,sy=0,tracking=false,claimed=false,inner=false,lock=0,touching=false,settle=null,pend=null,tgt=null;
+  const curIdx=()=>Math.max(0,Math.min(area.children.length-1,Math.round(area.scrollTop/(area.clientHeight||1))));
+  function pageBy(d){
+    if(S.page!=="lesson"||Date.now()<lock)return;
+    const i=pend!=null?pend:curIdx(),t=Math.max(0,Math.min(area.children.length-1,i+d));
+    if(t===i)return;
+    pend=t;lock=Date.now()+420;
+    area.children[t].scrollIntoView({behavior:"smooth",block:"start"});
+    setTimeout(()=>{pend=null;},520);
+  }
+  const scroller=(el,d)=>{for(;el&&el!==area;el=el.parentElement){if(el.scrollHeight>el.clientHeight+2){const o=getComputedStyle(el).overflowY;if(o==="auto"||o==="scroll"){if(d<0&&el.scrollTop+el.clientHeight<el.scrollHeight-2)return true;if(d>0&&el.scrollTop>2)return true;}}}return false;};
+  area.addEventListener("touchstart",e=>{if(S.page!=="lesson"||e.touches.length!==1){tracking=false;return;}touching=true;sx=e.touches[0].clientX;sy=e.touches[0].clientY;tracking=true;claimed=false;inner=false;tgt=e.target;},{passive:true});
   area.addEventListener("touchmove",e=>{
-    if(!tracking||inner||S.page!=="lesson"||e.touches.length!==1)return;
-    const t=e.touches[0];dx=t.clientX-sx;dy=t.clientY-sy;
-    if(Math.abs(dy)>12&&Math.abs(dy)>Math.abs(dx)*1.15){claimed=true;e.preventDefault();}
+    if(!tracking||inner||e.touches.length!==1)return;
+    const dx=e.touches[0].clientX-sx,dy=e.touches[0].clientY-sy;
+    if(claimed){e.preventDefault();return;}
+    if(Math.abs(dy)>12&&Math.abs(dy)>Math.abs(dx)*1.15){
+      if((tgt&&tgt.closest&&tgt.closest("textarea,input,select,.word-popup"))||scroller(tgt,dy)){inner=true;return;}
+      claimed=true;e.preventDefault();
+    }
   },{passive:false});
   area.addEventListener("touchend",e=>{
-    if(!tracking)return;tracking=false;if(inner||!claimed||S.page!=="lesson")return;
-    const t=e.changedTouches[0];dx=t.clientX-sx;dy=t.clientY-sy;
-    if(Math.abs(dy)<55||Math.abs(dy)<Math.abs(dx)*1.15)return;
-    const {cards,i}=getCurrent();if(i<0)return;
-    const target=Math.max(0,Math.min(cards.length-1,i+(dy<0?1:-1)));
-    if(target!==i){S.activeIdx=target;cards[target].scrollIntoView({behavior:"auto",block:"start"});}
+    touching=false;if(!tracking)return;tracking=false;
+    if(inner||!claimed||S.page!=="lesson")return;
+    const dy=e.changedTouches[0].clientY-sy;
+    if(Math.abs(dy)>=55)pageBy(dy<0?1:-1);
     if(e.cancelable)e.preventDefault();
   },{passive:false});
-  area.addEventListener("touchcancel",()=>{tracking=false;claimed=false;},{passive:true});
+  area.addEventListener("touchcancel",()=>{tracking=false;claimed=false;touching=false;},{passive:true});
+  area.addEventListener("wheel",e=>{
+    if(S.page!=="lesson"||Math.abs(e.deltaY)<20||scroller(e.target,-e.deltaY))return;
+    e.preventDefault();pageBy(e.deltaY>0?1:-1);
+  },{passive:false});
+  document.addEventListener("keydown",e=>{
+    if(S.page!=="lesson"||/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName||""))return;
+    if(e.key==="ArrowDown"||e.key==="PageDown"||e.key===" "){e.preventDefault();pageBy(1);}
+    else if(e.key==="ArrowUp"||e.key==="PageUp"){e.preventDefault();pageBy(-1);}
+  });
+  area.addEventListener("scroll",()=>{
+    if(S.page!=="lesson")return;
+    clearTimeout(settle);
+    settle=setTimeout(()=>{if(touching||pend!=null)return;const h=area.clientHeight,t=Math.round(area.scrollTop/h)*h;if(Math.abs(area.scrollTop-t)>3)area.scrollTo({top:t,behavior:"smooth"});},160);
+  },{passive:true});
 })();
 
 /* Horizontal swipe: right = previous section, left = next available section */
@@ -2212,7 +2086,7 @@ function startSrsSession(){
       <div class="vocab-count"><span>Card ${done+1} / ${total}</span><div class="bar"><i style="width:${Math.round(done/total*100)}%"></i></div></div>
       <div class="srs-card" id="srsCard">
         <div class="front">${esc(card.front)}</div>
-        <div class="back hidden"><div>${esc(card.back||"—")}</div>${card.backFa?`<div class="fa">${esc(card.backFa)}</div>`:""}</div>
+        <div class="back hidden">${card.ex?`<div style="font-family:var(--serif);font-style:italic">"${esc(card.ex)}"</div>`:""}${card.backFa?`<div class="fa">${esc(card.backFa)}</div>`:""}</div>
         <div class="srs-hint">Tap to reveal</div>
       </div>
       <div class="rate-grid hidden" id="rateGrid">
@@ -2234,7 +2108,7 @@ function startSrsSession(){
     feed.querySelectorAll(".rate-btn").forEach(b=>{
       b.addEventListener("click",()=>{
         const r=+b.dataset.r;
-        updateSrs(card,r);
+        updateSrs(card,r);bumpMetric("review",1);
         if(r===0)queue.push(queue.shift()); else {queue.shift();done++;}
         sClick(); render();
       });
@@ -2246,8 +2120,8 @@ function startSrsSession(){
 function updateSrs(card,r){
   const c=srs.find(x=>x.id===card.id); if(!c)return;
   if(r===0){c.reps=0;c.interval=0;c.ease=Math.max(1.3,c.ease-.2);}
-  else{if(c.reps===0)c.interval=r===1?1:r===2?1:3;
-    else if(c.reps===1)c.interval=r===1?2:r===2?3:6;
+  else{if(c.reps===0)c.interval=r===1?1:r===2?2:4;
+    else if(c.reps===1)c.interval=r===1?2:r===2?4:7;
     else{const f=r===1?1.2:r===2?c.ease:c.ease*1.3;c.interval=Math.max(1,Math.round(c.interval*f));}
     c.reps++; if(r===1)c.ease=Math.max(1.3,c.ease-.15); else if(r===3)c.ease=Math.min(3,c.ease+.1);}
   c.lastReviewed=Date.now();
@@ -2345,7 +2219,7 @@ Current lesson: ${S.lesson||"—"}`;
 function renderSettingsPage(){
   const feed=$("#feed");
   const isDark=document.documentElement.getAttribute("data-theme")==="dark";
-  const autoReveal=storage.getItem("ts3_auto_reveal")!=="0";
+  const autoReveal=storage.getItem("ts3_auto_reveal")==="1";
   feed.innerHTML=`
     <section class="card" data-sec="overview"><div class="card-inner">
       <div class="kicker">Settings</div>
@@ -2353,7 +2227,6 @@ function renderSettingsPage(){
       <div class="settings-row"><div><div class="label">Your name</div><div class="desc">${esc(userName||"(not set)")}</div></div><button class="btn-mini" id="editName">Edit</button></div>
       <div class="settings-row"><div><div class="label">Appearance</div><div class="desc">${isDark?"Dark":"Light"} mode</div></div><button class="btn-mini" id="themeToggle">${isDark?"☀️ Light":"🌙 Dark"}</button></div>
       <div class="settings-row"><div><div class="label">Sound & pronunciation</div><div class="desc">UI sounds · text-to-speech · auto-pronounce words</div></div><button class="btn-mini" id="soundToggle" style="background:${soundOn?"var(--ok)":"var(--muted)"}">${soundOn?"On":"Muted"}</button></div>
-      <div class="settings-row"><div><div class="label">Automatic vocabulary reveal & advance</div><div class="desc">After 3 seconds, reveal meaning and example; advance 4 seconds later. Toggle this feature on or off.</div></div><button class="btn-mini" id="autoRevealToggle" style="background:${autoReveal?"var(--ok)":"var(--muted)"}">${autoReveal?"On":"Off"}</button></div>
       <div class="settings-row"><div><div class="label">Reset progress</div><div class="desc">Clear all data permanently</div></div><button class="btn-mini" id="resetBtn" style="background:var(--bad)">Reset</button></div>
     </div></section>
 
@@ -2372,7 +2245,6 @@ function renderSettingsPage(){
     </div></section>
   `;
   feed.scrollTop=0;
-  $("#autoRevealToggle").onclick=()=>{storage.setItem("ts3_auto_reveal",autoReveal?"0":"1");renderSettingsPage();};
   $("#editName").onclick=()=>promptName(false);
   $("#themeToggle").onclick=()=>{
     const cur=document.documentElement.getAttribute("data-theme");
@@ -2390,7 +2262,7 @@ function renderSettingsPage(){
   $("#applyCode").onclick=()=>{
     const v=String($("#codeInput").value||"").trim().toUpperCase();
     if(v===TEACHER_PASSWORD.toUpperCase()){
-      teacherMode=true;storage.setItem("ts3_teacher_mode","1");
+      teacherMode=!teacherMode;storage.setItem("ts3_teacher_mode",teacherMode?"1":"0");renderHome();sChime();alert(teacherMode?"Teacher mode ON — all lessons unlocked.":"Teacher mode OFF.");return;
       ORDER.forEach(id=>{if(LESSONS[id]&&LESSONS[id].ready){teacherUnlocked[id]=true;["vocab","vocab_flash","vocab_match","vocab_gap","reading","reading_t1","reading_t2","writing","grammar","g_learn","g_test","g_passages"].forEach(k=>progress[id+"_"+k]=true);}});
       storage.setItem("ts3_teacher_unlocked",JSON.stringify(teacherUnlocked));saveP();renderHome();sChime();alert("Teacher mode ON — all lessons unlocked and marked complete.");return;
     }
@@ -2404,7 +2276,7 @@ function renderSettingsPage(){
   };
   $("#exportBtn").onclick=()=>{
     const data=JSON.stringify({name:userName,progress,srs,metrics,lessonXP,timeSpent,timeDays,activityLog:activityLog.slice(-200)});
-    try{navigator.clipboard.writeText(data);}catch(e){}
+    try{navigator.clipboard.writeText(data).catch(()=>prompt("Copy your backup:",data));}catch(e){prompt("Copy your backup:",data);}
     const b=$("#exportBtn");b.textContent="✓ Copied";
     setTimeout(()=>b.textContent="📋 Copy backup",1500);
   };
@@ -2414,13 +2286,13 @@ function renderSettingsPage(){
     try{
       const d=JSON.parse(text);
       if(d.name){userName=d.name;storage.setItem("ts3_name",d.name);}
-      if(d.progress){progress=d.progress;saveP();}
-      if(d.srs){srs=d.srs;saveS();}
+      if(d.progress&&typeof d.progress==="object"){progress=d.progress;saveP();}
+      if(Array.isArray(d.srs)){srs=d.srs;saveS();}
       if(d.metrics){metrics=d.metrics;}
       if(d.lessonXP){lessonXP=d.lessonXP;}
       if(d.timeSpent){timeSpent=d.timeSpent;}
       if(d.timeDays){timeDays=d.timeDays;}
-      if(d.activityLog){activityLog=d.activityLog;}
+      if(Array.isArray(d.activityLog)){activityLog=d.activityLog;}
       saveM();saveT();
       alert("Imported ✓");
       renderHome();showPage("home");
@@ -2428,7 +2300,7 @@ function renderSettingsPage(){
   };
   $("#resetBtn").onclick=()=>{
     if(!confirm("Reset everything? This cannot be undone."))return;
-    progress={};srs=[];metrics={};lessonXP={};activityLog=[];timeSpent={learn:0,practice:0,progress:0,settings:0};timeDays={};
+    try{Object.keys(localStorage).filter(k=>/^ts3_(feed_pos_|last_lesson|draft_|dict_cache|teacher)/.test(k)).forEach(k=>localStorage.removeItem(k));}catch(e){}teacherMode=false;dictCache={};progress={};srs=[];metrics={};lessonXP={};activityLog=[];timeSpent={learn:0,practice:0,progress:0,settings:0};timeDays={};
     saveP();saveS();saveM();saveT();
     renderHome();showPage("home");
   };
@@ -2478,7 +2350,7 @@ function promptName(firstTime){
 let sectionStart=Date.now();
 let currentTracked="shelf";
 function startTime(s){flushTime();currentTracked=s;sectionStart=Date.now();}
-function flushTime(){const ms=Math.max(0,Date.now()-sectionStart);if(ms>0&&currentTracked)recordTime(ms);sectionStart=Date.now();}
+function flushTime(){const ms=Math.max(0,Date.now()-sectionStart);if(ms>0&&(currentTracked==="learn"||currentTracked==="practice"))recordTime(Math.min(ms,30*60000));sectionStart=Date.now();}
 document.addEventListener("visibilitychange",()=>{if(document.hidden){flushTime();stopSpeak();}else sectionStart=Date.now();});
 window.addEventListener("beforeunload",flushTime);
 
@@ -2487,7 +2359,7 @@ window.addEventListener("beforeunload",flushTime);
    ============================================================ */
 document.addEventListener("keydown",e=>{
   if(e.key==="Escape"){closeSheet();hidePopup();stopSpeak();}
-  if((e.key==="m"||e.key==="j")&&S.page==="lesson")openSheet();
+  if((e.key==="m"||e.key==="j")&&S.page==="lesson"&&!/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName||""))openSheet();
 });
 
 /* ============================================================
@@ -2500,6 +2372,7 @@ if("serviceWorker" in navigator && (location.protocol==="https:" || location.hos
 (function boot(){
   document.documentElement.setAttribute("data-theme",theme);
   showPage("home");
+  $("#feed").addEventListener("scroll",hidePopup,{passive:true});
   if(!userName){setTimeout(()=>promptName(true),400);}
   startTime("shelf");
 })();

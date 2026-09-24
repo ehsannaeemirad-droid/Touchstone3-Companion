@@ -1,5 +1,14 @@
-const CACHE_NAME = "ts3-companion-v1.9.3";
-const CORE = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg"];
-self.addEventListener("install", event => { event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting())); });
-self.addEventListener("activate", event => { event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith("ts3-companion-") && key !== CACHE_NAME).map(key => caches.delete(key)))).then(() => self.clients.claim())); });
-self.addEventListener("fetch", event => { const req = event.request; if (req.method !== "GET" || new URL(req.url).origin !== self.location.origin) return; event.respondWith(caches.match(req).then(cached => cached || fetch(req).then(response => { if (response && response.ok) { const copy = response.clone(); caches.open(CACHE_NAME).then(cache => cache.put(req, copy)); } return response; }).catch(() => caches.match("./index.html")))); });
+/* Bump VERSION whenever you publish changes so students get the update. */
+const VERSION="ts3-v2.2";
+const CORE=["./","index.html","lessons.js","manifest.webmanifest","icon-192.png","icon-512.png"];
+self.addEventListener("install",e=>{e.waitUntil(caches.open(VERSION).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()));});
+self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==VERSION).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
+self.addEventListener("fetch",e=>{
+  const r=e.request,u=new URL(r.url);
+  if(r.method!=="GET"||u.hostname.includes("mymemory"))return;
+  e.respondWith(caches.open(VERSION).then(async c=>{
+    const hit=await c.match(r,{ignoreSearch:r.mode==="navigate"});
+    const net=fetch(r).then(res=>{if(res&&(res.ok||res.type==="opaque"))c.put(r,res.clone());return res;}).catch(()=>null);
+    return hit||(await net)||(r.mode==="navigate"?c.match("index.html"):Response.error());
+  }));
+});
